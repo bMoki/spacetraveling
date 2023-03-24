@@ -1,1 +1,22 @@
-// TODO
+.header {
+    max-width: 1120px;
+    height: 8rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+
+    display: flex;
+    align-items: center;
+
+    span {
+        color: var(--highlight);
+        font-weight: bold;
+        font-size: 24px;
+    }
+
+    h2 {
+        color: var(--heading);
+        font-weight: bold;
+        font-size: 24px;
+        margin-left: 12px;
+    }
+}
