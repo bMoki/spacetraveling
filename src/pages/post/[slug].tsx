@@ -54,10 +54,10 @@ export default function Post({ post }: PostProps) {
           <div className={styles.content}>
             {post.data.content.map((content) => {
               return (
-                <>
+                <div key={content.body}>
                   <h2>{content.heading}</h2>
                   <div dangerouslySetInnerHTML={{ __html: content.body }}></div>
-                </>
+                </div>
               )
             })}
           </div>
