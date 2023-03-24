@@ -5,6 +5,7 @@ import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import Header from '../components/Header';
+import { Post } from '../components/Post';
 
 interface Post {
   uid?: string;
@@ -27,7 +28,13 @@ interface HomeProps {
 
 export default function Home() {
   return (
-    <Header />
+    <>
+      <Header />
+      <main className={styles.container}>
+        <Post />
+      </main>
+    </>
+
   )
 }
 

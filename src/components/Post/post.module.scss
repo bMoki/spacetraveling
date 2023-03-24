@@ -1,0 +1,38 @@
+.container {
+    max-width: 700px;
+
+    h2 {
+        font-size: 1.75rem;
+        color: var(--heading);
+        font-weight: bold;
+        letter-spacing: -0.5px;
+        margin-bottom: 8px;
+    }
+
+    p {
+        font-size: 1.125rem;
+        color: var(--body);
+        margin-bottom: 24px;
+    }
+
+    div {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        color: var(--info);
+        font-size: 0.875rem;
+
+
+        time {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+}
