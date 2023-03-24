@@ -1,6 +1,12 @@
-.container {
-    max-width: 1120px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    margin-top: 1rem;
+.button {
+    all: unset;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--highlight);
+    margin: 64px 0;
+
+    &:hover {
+        opacity: 0.85;
+        cursor: pointer;
+    }
 }
