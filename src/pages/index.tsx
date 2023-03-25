@@ -2,10 +2,7 @@ import { GetStaticProps } from 'next';
 import { getPrismicClient } from '../services/prismic';
 import styles from './home.module.scss';
 import commonStyles from '../styles/common.module.scss';
-import Header from '../components/Header';
 import PostCard from '../components/PostCard';
-import { format } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
 import { useState } from 'react';
 
 interface Post {

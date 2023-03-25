@@ -8,10 +8,10 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import Image from 'next/image';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi'
-import { asHTML } from '@prismicio/helpers'
 
 interface Post {
   first_publication_date: string | null;
+  uid: string,
   data: {
     title: string;
     banner: {
@@ -20,7 +20,9 @@ interface Post {
     author: string;
     content: {
       heading: string;
-      body: string;
+      body: {
+        text: string;
+      }[];
     }[];
   };
 }
@@ -46,12 +48,21 @@ export default function Post({ post }: PostProps) {
         <div className={styles.post}>
           <h1>{post.data.title}</h1>
           <div className={styles.info}>
-            <time><FiCalendar size={20} />{post.first_publication_date}</time>
+            <time>
+              <FiCalendar size={20} />
+              {format(
+                new Date(post.first_publication_date),
+                "dd MMM yyyy",
+                {
+                  locale: ptBR
+                }
+              )}
+            </time>
             <span><FiUser size={20} />{post.data.author}</span>
             <span><FiClock size={20} />4min</span>
           </div>
 
-          <div className={styles.content}>
+          {/* <div className={styles.content}>
             {post.data.content.map((content) => {
               return (
                 <div key={content.body}>
@@ -60,7 +71,7 @@ export default function Post({ post }: PostProps) {
                 </div>
               )
             })}
-          </div>
+          </div> */}
         </div>
 
       </div>
@@ -86,20 +97,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient({});
   const response = await prismic.getByUID('posts', String(params.slug), {});
 
   const post = {
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      "dd MMM yyyy",
-      {
-        locale: ptBR
-      }
-    ),
+    first_publication_date: response.first_publication_date,
+    uid: response.uid,
     data: {
       title: response.data.title,
+      subtitle: response.data.subtitle,
       banner: {
         url: response.data.banner.url,
       },
@@ -107,7 +114,7 @@ export const getStaticProps = async ({ params }) => {
       content: response.data.content.map(content => {
         return {
           heading: content.heading,
-          body: asHTML(content.body)
+          body: content.body
         }
       }),
     }
