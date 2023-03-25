@@ -1,6 +1,8 @@
 import styles from './postCard.module.scss'
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import Link from 'next/link'
+import { ptBR } from 'date-fns/locale';
+import { format } from 'date-fns';
 
 interface PostCardProps {
     title: string,
@@ -19,7 +21,15 @@ export default function PostCard({ author, subtitle, time, title, slug }: PostCa
                     <h2>{title}</h2>
                     <p>{subtitle}</p>
                     <div>
-                        <time><FiCalendar size={20} />{time}</time>
+                        <time>
+                            <FiCalendar size={20} />
+                            {format(
+                                new Date(time),
+                                "dd MMM yyyy",
+                                {
+                                    locale: ptBR
+                                }
+                            )}</time>
                         <span><FiUser size={20} />{author}</span>
                     </div>
                 </div>

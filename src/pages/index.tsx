@@ -44,13 +44,7 @@ export default function Home({ postsPagination }: HomeProps) {
           results: data.results.map(result => {
             return {
               uid: result?.uid,
-              first_publication_date: format(
-                new Date(result.first_publication_date),
-                "dd MMM yyyy",
-                {
-                  locale: ptBR
-                }
-              ),
+              first_publication_date: result.first_publication_date,
               data: {
                 title: result.data.title,
                 subtitle: result.data.subtitle,
@@ -106,13 +100,7 @@ export const getStaticProps: GetStaticProps = async ({ previewData }) => {
     results: postsResponse.results.map(result => {
       return {
         uid: result?.uid,
-        first_publication_date: format(
-          new Date(result.first_publication_date),
-          "dd MMM yyyy",
-          {
-            locale: ptBR
-          }
-        ),
+        first_publication_date: result.first_publication_date,
         data: {
           title: result.data.title,
           subtitle: result.data.subtitle,
