@@ -160,8 +160,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     }
   }
 
-  console.log(JSON.stringify(post.data.content));
-
   return {
     props: {
       post,

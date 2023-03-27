@@ -9,7 +9,7 @@ export default function Header() {
       <Link href={'/'}>
         <a>
           <Image
-            src={Logo}
+            src='/Logo.svg'
             alt='logo'
             width={238.62}
             height={25.63}
