@@ -8,6 +8,11 @@ import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import Image from 'next/image';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi'
+import { useRouter } from 'next/router';
+import { asHTML } from '@prismicio/helpers'
+import * as RichText from '@prismicio/richtext'
+import { useMemo } from 'react';
+
 
 interface Post {
   first_publication_date: string | null;
@@ -20,9 +25,7 @@ interface Post {
     author: string;
     content: {
       heading: string;
-      body: {
-        text: string;
-      }[];
+      body: [];
     }[];
   };
 }
@@ -32,7 +35,41 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
-  console.log(post)
+  const router = useRouter();
+
+  if (router.isFallback) {
+    return <div>Carregando...</div>
+  }
+
+  const readTime = useMemo(() => {
+    if (router.isFallback) {
+      return 0;
+    }
+
+    const wordsPerMinute = 200;
+
+    // Faz um reduce que pega todo o texto do post, desde o título até o body
+    const contentWords = post.data.content.reduce(
+      (summedContents, currentContent) => {
+
+        const headingWords = currentContent.heading.split(/\s/g).length;
+
+
+        const bodyText = RichText.asText(currentContent.body);
+        const bodyWords = bodyText.split(/\s/g).length;
+
+        return summedContents + headingWords + bodyWords;
+      },
+      0
+    );
+
+    const minutes = contentWords / wordsPerMinute;
+    const totalReadTime = Math.ceil(minutes);
+
+    return totalReadTime;
+  }, [post, router.isFallback]);
+
+
   return (
     <article >
 
@@ -59,19 +96,21 @@ export default function Post({ post }: PostProps) {
               )}
             </time>
             <span><FiUser size={20} />{post.data.author}</span>
-            <span><FiClock size={20} />4min</span>
+            <span><FiClock size={20} />{readTime} min</span>
           </div>
 
-          {/* <div className={styles.content}>
-            {post.data.content.map((content) => {
+          <div className={styles.content}>
+            {post.data.content.map(({ heading, body }) => {
               return (
-                <div key={content.body}>
-                  <h2>{content.heading}</h2>
-                  <div dangerouslySetInnerHTML={{ __html: content.body }}></div>
+                <div key={heading}>
+                  <h2>{heading}</h2>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: asHTML(body) }}
+                  />
                 </div>
               )
             })}
-          </div> */}
+          </div>
         </div>
 
       </div>
@@ -101,6 +140,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const prismic = getPrismicClient({});
   const response = await prismic.getByUID('posts', String(params.slug), {});
 
+
   const post = {
     first_publication_date: response.first_publication_date,
     uid: response.uid,
@@ -119,6 +159,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       }),
     }
   }
+
+  console.log(JSON.stringify(post.data.content));
 
   return {
     props: {

@@ -1,6 +1,6 @@
 import styles from './header.module.scss'
 import Image from 'next/image'
-import MyLogo from '../../public/images/Logo.png'
+import Logo from '../../public/images/Logo.png'
 import Link from 'next/link'
 
 export default function Header() {
@@ -9,7 +9,7 @@ export default function Header() {
       <Link href={'/'}>
         <a>
           <Image
-            src={MyLogo}
+            src={Logo}
             alt='logo'
             width={238.62}
             height={25.63}
@@ -21,8 +21,3 @@ export default function Header() {
     </header>
   )
 }
-
-
-{/* <span>{"</>"}</span>
-      <h2>spacetraveling</h2>
-      <span>.</span> */}
